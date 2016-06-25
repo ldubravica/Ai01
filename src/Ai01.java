@@ -13,7 +13,7 @@ public class Ai01 {
     private static Dictionary definitions = new Hashtable();
     private static String output;
 
-    public static void main(String[] args){
+    public static void main(String[] args){ while(true){
 
         System.out.print("I: ");
         String userinput = scaninput.nextLine();
@@ -24,10 +24,13 @@ public class Ai01 {
         if(Arrays.asList(arrayinput).contains("is")) {
             defining(arrayinput);
         }
+        else if(Arrays.asList(arrayinput).contains("define")) {
+            define(arrayinput);
+        }
 
         System.out.println(output);
 
-    }
+    }}
 
     private static String defining(String arrayinput[]){
 
@@ -53,6 +56,25 @@ public class Ai01 {
 
         definitions.put(stringbefore, stringafter);
         output = "O: " + "Is " + stringbefore + " " + definitions.get(stringbefore) + "?";
+
+        return output;
+
+    }
+
+    private static String define(String arrayinput[]){
+
+        ArrayList arrayterm = new ArrayList();
+
+        int define_pos = Arrays.asList(arrayinput).indexOf("is");
+
+        for(int i = define_pos + 1; i < arrayinput.length; i++){
+
+            arrayterm.add(arrayinput[i]);
+
+        }
+
+        String stringterm = String.join(" ", arrayterm);
+        output = "O: " + "It is " + definitions.get(stringterm);
 
         return output;
 
