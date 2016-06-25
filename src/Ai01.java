@@ -9,34 +9,42 @@ import java.util.Scanner;
  */
 public class Ai01 {
 
+    private static Scanner scaninput = new Scanner(System.in);
+    private static Dictionary definitions = new Hashtable();
+    private static String output;
+
     public static void main(String[] args){
 
-        Scanner scaninput = new Scanner(System.in);
         System.out.print("I: ");
         String userinput = scaninput.nextLine();
-        userinput = userinput.toLowerCase();
 
+        userinput = userinput.toLowerCase();
         String arrayinput[] = userinput.split(" ");
-        Dictionary definitions = new Hashtable();
+
+        if(Arrays.asList(arrayinput).contains("is")) {
+            defining(arrayinput);
+        }
+
+        System.out.println(output);
+
+    }
+
+    private static String defining(String arrayinput[]){
 
         ArrayList arraybefore = new ArrayList();
         ArrayList arrayafter = new ArrayList();
 
-        if(Arrays.asList(arrayinput).contains("is")) {
+        int is_pos = Arrays.asList(arrayinput).indexOf("is");
 
-            int is_pos = Arrays.asList(arrayinput).indexOf("is");
+        for(int i = 0; i < is_pos; i++){
 
-            for(int i = 0; i < is_pos; i++){
+            arraybefore.add(arrayinput[i]);
 
-                arraybefore.add(arrayinput[i]);
+        }
 
-            }
+        for(int i = is_pos + 1; i < arrayinput.length; i++){
 
-            for(int i = is_pos + 1; i < arrayinput.length; i++){
-
-                arrayafter.add(arrayinput[i]);
-
-            }
+            arrayafter.add(arrayinput[i]);
 
         }
 
@@ -44,8 +52,9 @@ public class Ai01 {
         String stringafter = String.join(" ", arrayafter);
 
         definitions.put(stringbefore, stringafter);
+        output = "O: " + "Is " + stringbefore + " " + definitions.get(stringbefore) + "?";
 
-        System.out.println("O: " + "Is " + stringbefore + " " + definitions.get(stringbefore) + "?");
+        return output;
 
     }
 
