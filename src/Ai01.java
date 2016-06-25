@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -10,7 +9,7 @@ import java.util.Scanner;
 public class Ai01 {
 
     private static Scanner scaninput = new Scanner(System.in);
-    private static Dictionary definitions = new Hashtable();
+    private static HashMap<String, String> definitions = new HashMap<>();
     private static String output;
 
     public static void main(String[] args){ while(true){
@@ -21,18 +20,21 @@ public class Ai01 {
         userinput = userinput.toLowerCase();
         String arrayinput[] = userinput.split(" ");
 
-        if(Arrays.asList(arrayinput).contains("is")) {
-            defining(arrayinput);
-        }
-        else if(Arrays.asList(arrayinput).contains("define")) {
+        if(Arrays.asList(arrayinput).contains("is") & arrayinput[0] == "is") {
             define(arrayinput);
         }
+        else if(Arrays.asList(arrayinput).contains("define")) {
+            answer(arrayinput);
+        }
+        else{
+            output = "Unknown command";
+        }
 
-        System.out.println(output);
+        System.out.println("O: " + output);
 
     }}
 
-    private static String defining(String arrayinput[]){
+    private static String define(String arrayinput[]){
 
         ArrayList arraybefore = new ArrayList();
         ArrayList arrayafter = new ArrayList();
@@ -55,17 +57,17 @@ public class Ai01 {
         String stringafter = String.join(" ", arrayafter);
 
         definitions.put(stringbefore, stringafter);
-        output = "O: " + "Is " + stringbefore + " " + definitions.get(stringbefore) + "?";
+        output = "Is " + stringbefore + " " + definitions.get(stringbefore) + "?";
 
         return output;
 
     }
 
-    private static String define(String arrayinput[]){
+    private static String answer(String arrayinput[]){
 
         ArrayList arrayterm = new ArrayList();
 
-        int define_pos = Arrays.asList(arrayinput).indexOf("is");
+        int define_pos = Arrays.asList(arrayinput).indexOf("define");
 
         for(int i = define_pos + 1; i < arrayinput.length; i++){
 
@@ -74,7 +76,13 @@ public class Ai01 {
         }
 
         String stringterm = String.join(" ", arrayterm);
-        output = "O: " + "It is " + definitions.get(stringterm);
+
+        if(definitions.containsKey(stringterm)){
+            output = "It is " + definitions.get(stringterm);
+        }
+        else{
+            output = "Term not found";
+        }
 
         return output;
 
