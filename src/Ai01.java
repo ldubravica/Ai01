@@ -8,30 +8,30 @@ import java.util.Scanner;
  */
 public class Ai01 {
 
-    private static Scanner scaninput = new Scanner(System.in);
+    private static Scanner scanInput = new Scanner(System.in);
     private static HashMap<String, String> definitions = new HashMap<>();
     private static String output;
 
     public static void main(String[] args){ while(true){
 
         System.out.print("I: ");
-        String userinput = scaninput.nextLine();
+        String userInput = scanInput.nextLine();
 
-        userinput = userinput.toLowerCase();
-        String arrayinput[] = userinput.split(" ");
+        userInput = userInput.toLowerCase();
+        String arrayInput[] = userInput.split(" ");
 
-        boolean is_first = arrayinput[0].equals("is");
-        boolean is_contains = Arrays.asList(arrayinput).contains("is");
-        boolean define_contains = Arrays.asList(arrayinput).contains("define");
+        boolean is_first = arrayInput[0].equals("is");
+        boolean is_contains = Arrays.asList(arrayInput).contains("is");
+        boolean define_contains = Arrays.asList(arrayInput).contains("define");
 
         if(!is_first && is_contains) {
-            define(arrayinput);
+            define(arrayInput);
         }
         else if(is_first){
-            check(arrayinput);
+            check(arrayInput);
         }
         else if(define_contains) {
-            answer(arrayinput);
+            answer(arrayInput);
         }
         else{
             output = "Unknown command";
@@ -41,52 +41,46 @@ public class Ai01 {
 
     }}
 
-    private static String define(String arrayinput[]){
+    private static String define(String arrayInput[]){
 
-        output = "method define failed";
+        output = "Method define - failed";
 
-        ArrayList arraybefore = new ArrayList();
-        ArrayList arrayafter = new ArrayList();
+        ArrayList<String> arrayBefore = new ArrayList<>();
+        ArrayList<String> arrayAfter = new ArrayList<>();
 
-        int is_pos = Arrays.asList(arrayinput).indexOf("is");
+        int is_pos = Arrays.asList(arrayInput).indexOf("is");
 
         for(int i = 0; i < is_pos; i++){
-
-            arraybefore.add(arrayinput[i]);
-
+            arrayBefore.add(arrayInput[i]);
         }
 
-        for(int i = is_pos + 1; i < arrayinput.length; i++){
-
-            arrayafter.add(arrayinput[i]);
-
+        for(int i = is_pos + 1; i < arrayInput.length; i++){
+            arrayAfter.add(arrayInput[i]);
         }
 
-        String stringbefore = String.join(" ", arraybefore);
-        String stringafter = String.join(" ", arrayafter);
+        String stringBefore = String.join(" ", arrayBefore);
+        String stringAfter = String.join(" ", arrayAfter);
 
-        definitions.put(stringbefore, stringafter);
-        output = "Is " + stringbefore + " " + definitions.get(stringbefore) + "?";
+        definitions.put(stringBefore, stringAfter);
+        output = "Is " + stringBefore + " " + definitions.get(stringBefore) + "?";
 
         return output;
 
     }
 
-    private static String answer(String arrayinput[]){
+    private static String answer(String arrayInput[]){
 
-        output = "method answer failed";
+        output = "Method answer - failed";
 
-        ArrayList arrayterm = new ArrayList();
+        ArrayList<String> arrayTerm = new ArrayList<>();
 
-        int define_pos = Arrays.asList(arrayinput).indexOf("define");
+        int define_pos = Arrays.asList(arrayInput).indexOf("define");
 
-        for(int i = define_pos + 1; i < arrayinput.length; i++){
-
-            arrayterm.add(arrayinput[i]);
-
+        for(int i = define_pos + 1; i < arrayInput.length; i++){
+            arrayTerm.add(arrayInput[i]);
         }
 
-        String stringterm = String.join(" ", arrayterm);
+        String stringterm = String.join(" ", arrayTerm);
 
         if(definitions.containsKey(stringterm)){
             output = "It is " + definitions.get(stringterm);
@@ -99,66 +93,48 @@ public class Ai01 {
 
     }
 
-    private static String check(String arrayinput[]){
+    private static String check(String arrayInput[]){
 
-        output = "method check failed";
+        output = "Method check - failed";
 
-        int is_pos = Arrays.asList(arrayinput).indexOf("is");
-        int begOfKey = is_pos + 1;
+        int is_pos = Arrays.asList(arrayInput).indexOf("is");
+        int i = is_pos + 1;
 
-        ArrayList finalarray = new ArrayList();
-        String whileKey = arrayinput[begOfKey];
-        String whileValue;
+        ArrayList<String> arrayKey = new ArrayList<>();
+        ArrayList<String> arrayValue = new ArrayList<>();
 
-        if(definitions.containsKey(whileKey)) {
-            finalarray.add(whileKey);
+        String whileKey = null;
+        String whileValue = null;
+
+        while(!definitions.containsKey(whileKey) && i < arrayInput.length){
+
+            arrayKey.add(arrayInput[i]);
+            i++;
+            whileKey = String.join(" ", arrayKey);
+
+        }
+
+        if(definitions.containsKey(whileKey)){
+
+            while(!definitions.get(whileKey).equals(whileValue) && i < arrayInput.length){
+
+                arrayValue.add(arrayInput[i]);
+                i++;
+                whileValue = String.join(" ", arrayValue);
+                System.out.println(whileKey + " + " + whileValue + " + " + i);
+
+            }
+
+            if(definitions.get(whileKey).equals(whileValue)){
+                output = "Yes";
+            }
+            else{
+                output = "No";
+            }
+
         }
         else {
-
-            System.out.println("whileKey = " + whileKey + "\n" + "containsKey = " + definitions.containsKey(whileKey) + "\n");
-
-            int i = begOfKey + 1;
-
-            while(!definitions.containsKey(whileKey) && i < arrayinput.length){
-
-                whileKey += " ";
-                whileKey += arrayinput[i];
-                i++;
-
-            }
-
-            System.out.println("whileKey = " + whileKey + "\n" + "containsKey = " + definitions.containsKey(whileKey) + "\n");
-
-            if(definitions.containsKey(whileKey)){
-
-                whileValue = arrayinput[i];
-                i++;
-
-                System.out.println("whileValue = " + whileValue + "\n" + "arrayinput = " + arrayinput + "\n" + "containsKey = " + definitions.containsKey(whileKey) + "\n" + "key equals value = " + definitions.get(whileKey) != whileValue + "\n");
-
-                while(definitions.get(whileKey) != whileValue && i < arrayinput.length){
-                    whileValue += " ";
-                    whileValue += arrayinput[i];
-                    i++;
-                }
-
-                System.out.println("whileValue = " + whileValue + "\n" + "containsKey = " + definitions.containsKey(whileKey) + "\n" + "key equals value = " + definitions.get(whileKey) != whileValue + "\n");
-
-                if(definitions.get(whileKey).equals(whileValue)){
-                    output = "Yes";
-                }
-                else{
-                    output = "No";
-                }
-
-            }
-
-            else{
-                output = "Term not found";
-            }
-
             output = "Term not found";
-
         }
 
         return output;
