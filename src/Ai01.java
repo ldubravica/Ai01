@@ -20,10 +20,17 @@ public class Ai01 {
         userinput = userinput.toLowerCase();
         String arrayinput[] = userinput.split(" ");
 
-        if(Arrays.asList(arrayinput).contains("is") & arrayinput[0] == "is") {
+        boolean is_first = arrayinput[0].equals("is");
+        boolean is_contains = Arrays.asList(arrayinput).contains("is");
+        boolean define_contains = Arrays.asList(arrayinput).contains("define");
+
+        if(!is_first && is_contains) {
             define(arrayinput);
         }
-        else if(Arrays.asList(arrayinput).contains("define")) {
+        else if(is_first){
+            check(arrayinput);
+        }
+        else if(define_contains) {
             answer(arrayinput);
         }
         else{
@@ -35,6 +42,8 @@ public class Ai01 {
     }}
 
     private static String define(String arrayinput[]){
+
+        output = "method define failed";
 
         ArrayList arraybefore = new ArrayList();
         ArrayList arrayafter = new ArrayList();
@@ -65,6 +74,8 @@ public class Ai01 {
 
     private static String answer(String arrayinput[]){
 
+        output = "method answer failed";
+
         ArrayList arrayterm = new ArrayList();
 
         int define_pos = Arrays.asList(arrayinput).indexOf("define");
@@ -82,6 +93,72 @@ public class Ai01 {
         }
         else{
             output = "Term not found";
+        }
+
+        return output;
+
+    }
+
+    private static String check(String arrayinput[]){
+
+        output = "method check failed";
+
+        int is_pos = Arrays.asList(arrayinput).indexOf("is");
+        int begOfKey = is_pos + 1;
+
+        ArrayList finalarray = new ArrayList();
+        String whileKey = arrayinput[begOfKey];
+        String whileValue;
+
+        if(definitions.containsKey(whileKey)) {
+            finalarray.add(whileKey);
+        }
+        else {
+
+            System.out.println("whileKey = " + whileKey + "\n" + "containsKey = " + definitions.containsKey(whileKey) + "\n");
+
+            int i = begOfKey + 1;
+
+            while(!definitions.containsKey(whileKey) && i < arrayinput.length){
+
+                whileKey += " ";
+                whileKey += arrayinput[i];
+                i++;
+
+            }
+
+            System.out.println("whileKey = " + whileKey + "\n" + "containsKey = " + definitions.containsKey(whileKey) + "\n");
+
+            if(definitions.containsKey(whileKey)){
+
+                whileValue = arrayinput[i];
+                i++;
+
+                System.out.println("whileValue = " + whileValue + "\n" + "arrayinput = " + arrayinput + "\n" + "containsKey = " + definitions.containsKey(whileKey) + "\n" + "key equals value = " + definitions.get(whileKey) != whileValue + "\n");
+
+                while(definitions.get(whileKey) != whileValue && i < arrayinput.length){
+                    whileValue += " ";
+                    whileValue += arrayinput[i];
+                    i++;
+                }
+
+                System.out.println("whileValue = " + whileValue + "\n" + "containsKey = " + definitions.containsKey(whileKey) + "\n" + "key equals value = " + definitions.get(whileKey) != whileValue + "\n");
+
+                if(definitions.get(whileKey).equals(whileValue)){
+                    output = "Yes";
+                }
+                else{
+                    output = "No";
+                }
+
+            }
+
+            else{
+                output = "Term not found";
+            }
+
+            output = "Term not found";
+
         }
 
         return output;
